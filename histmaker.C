@@ -2,7 +2,7 @@
 using namespace std;
 
 void Centrality(TTree* T, TCut t, TH1D* h){
-     T->Project(h->GetName(), "HiBin", t);
+     T->Project(h->GetName(), "hiBin", t);
 }
 
 void HFEMaxPlus(TTree * T, TCut t, TH1D* h){
@@ -115,7 +115,7 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
-    TFile* f = new Tfile("INSERT HERE");
+    TFile* f = new TFile("INSERT HERE");
     TTree* T = (TTree*)f->Get("Tree"); 
 
     /////////////////////////////
@@ -129,7 +129,7 @@ void histmaker(){
     TCut VZcut("VZ > -15 && VZ < 15");
     TCut PVcut("PVFilter == 1");
     TCut CCcut("ClusterCompatibilityFilter == 1");
-    TCut Nvtxcut("NVtx > 0");
+    TCut Nvtxcut("nVtx > 0");
     // use HFONLINE and HFOFFLINE functions for a tcut
     // use TRKPT for track pt cuts
 
@@ -148,7 +148,7 @@ void histmaker(){
     TH1D* example1 = new TH1D("example", "Example Histogram", 201, -0.5, 200.5);
     TH1D* example2 = new TH1D("example2", "Example Histogram 2", 201, -0.5, 200.5);
 
-    Centrality(T, ESel_Example, example);
+    Centrality(T, ESel_Example1, example1);
     Centrality(T, ESel_Example2, example2);
 
     TH1D* cratio = Divide(example1, example2);
