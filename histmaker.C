@@ -99,8 +99,8 @@ TCut TRKPTCUT(float threshold){
     return ezcut;
 }
 
-TH1D* Divide(TH1D*h1, TH1D*h2){
-    TH1D* h3 = (TH1D*)h1->Clone();
+TH1D* Divide(TH1D*h1, TH1D*h2, string name){
+    TH1D* h3 = (TH1D*)h1->Clone(name.c_str());
     h3->Divide(h2);
     return h3;
 }
@@ -115,7 +115,7 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
-    TFile* f = new TFile("INSERT HERE");
+    TFile* f = new TFile("/data00/OOsamples/Skims20250629/skim_HiForest_250520_Hijing_MinimumBias_b015_OO_5362GeV_250518.root");
     TTree* T = (TTree*)f->Get("Tree"); 
 
     /////////////////////////////
@@ -137,6 +137,14 @@ void histmaker(){
     TCut ESel_Example1 = VZcut && PVcut && CCcut && Nvtxcut && HFONLINE(14, "&&");
     TCut ESel_Example2 = VZcut && PVcut && CCcut && Nvtxcut && HFOFFLINE(10, "||") && HFONLINE(14, "||");
 
+    TCut eventsel = VZcut && PVcut && CCcut && Nvtxcut;
+    TCut online14AND = HFONLINE(14, "&&");
+    TCut online14OR = HFONLINE(14, "||");
+    TCut online16OR = HFONLINE(16, "&&");
+    TCut online16AND = HFONLINE(16, "||");
+    TCut event_online14AND = eventsel && online14AND;
+    TCut event_online14AND_pt2 = event_online14AND && TRKPTCUT(2.0);
+
     /////////////////////////////
     /////////////////////////////
     ////                     ////
@@ -145,13 +153,13 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
-    TH1D* example1 = new TH1D("example", "Example Histogram", 201, -0.5, 200.5);
-    TH1D* example2 = new TH1D("example2", "Example Histogram 2", 201, -0.5, 200.5);
+    TH1D* minHFEMaxEvent = new TH1D("minHFEMaxeventsel", "HFEMax min with event selection", 201, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline14AND = new TH1D("minHFEMaxevent_online14AND", "HFEMax min with event and online 14 AND selection", 201, -0.5, 200.5);
 
-    Centrality(T, ESel_Example1, example1);
-    Centrality(T, ESel_Example2, example2);
+    HFEMax_Minimum(T, eventsel, minHFEMaxEvent);
+    HFEMax_Minimum(T, event_online14AND, minHFEMaxEventOnline14AND);
 
-    TH1D* cratio = Divide(example1, example2);
+    TH1D* ratio14AND = Divide(minHFEMaxEventOnline14AND, minHFEMaxEvent, "ratio14AND");
     
 
     /////////////////////////////
@@ -162,10 +170,10 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
-    TFile* outfile = new TFile("output.root", "RECREATE");
-    example1->Write();
-    example2->Write();
-    cratio->Write();
+    TFile* outfile = new TFile("online14AND.root", "RECREATE");
+    minHFEMaxEvent->Write();
+    minHFEMaxEventOnline14AND->Write();
+    ratio14AND->Write();
     outfile->Close();
     
 

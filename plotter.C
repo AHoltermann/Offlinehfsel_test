@@ -51,7 +51,19 @@ void Plotter1D(vector<TObject*> objects,  // these vectors should all be the sam
 }
 
 void plotter(){
-  cout << "Start" << endl;
-  
+    cout << "Start" << endl;
+    TFile* f = new TFile("online14AND.root");
+    Plotter1D(
+        {f->Get("ratio14AND")},
+        {kRed},
+        {"Ratio 14 AND"},
+        "minimum HFEMax [GeV]",
+        "maximum HFEMax [GeV]",
+        0.0, 200.0, 
+        0.0, 1.001,
+        0.7, 0.7,
+        0,
+        "online14AND.pdf"
+  );
   cout << "Done!" << endl;
 }
