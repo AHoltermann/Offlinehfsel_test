@@ -23,6 +23,24 @@ void HFEMax_Minimum(TTree* T, TCut t, TH1D* h) {
     T->Project(h->GetName(), expr, t);
 }
 
+void ADCPlus(TTree* T, TCut t, TH1D* h) {
+    T->Project(h->GetName(), "mMaxL1HFAdcPlus", t);
+}
+
+void ADCMinus(TTree* T, TCut t, TH1D* h) {
+    T->Project(h->GetName(), "mMaxL1HFAdcMinus", t);
+}  
+
+void ADC_Maximum(TTree* T, TCut t, TH1D* h) {
+    TString expr = Form("TMath::Max(%s,%s)", "mMaxL1HFAdcPlus", "mMaxL1HFAdcMinus");
+    T->Project(h->GetName(), expr, t);
+}   
+
+void ADC_Minimum(TTree* T, TCut t, TH1D* h) {
+    TString expr = Form("TMath::Min(%s,%s)", "mMaxL1HFAdcPlus", "mMaxL1HFAdcMinus");
+    T->Project(h->GetName(), expr, t);
+}
+
 void HFEMaxMinScatter(TTree* T, TCut t, TH2D* h) {
     TString exprX = "HFEMaxPlus";
     TString exprY = "HFEMaxMinus";
@@ -152,3 +170,4 @@ void histmaker(){
     
 
 }
+
