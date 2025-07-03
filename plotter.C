@@ -65,6 +65,8 @@ void Plotter2D(vector<TObject*> objects,  // TH2D objects first, TF1 after and T
     
 
     TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    c->SetTickx();
+    c->SetTicky();
     int colorIdx = 0;
     int labelIdx = 0;
     for (size_t i = 0; i < objects.size(); ++i) {
@@ -102,6 +104,9 @@ void Plotter2D(vector<TObject*> objects,  // TH2D objects first, TF1 after and T
 
 
 //get and draw percents on ratio plot
+
+
+//function to draw percent lines on ratio plot
 void DrawPercents(TF1 *func, double percent, float range_low, float range_high, Color_t color, TLegend *legend) 
 {
     TF1 *f_diff0 = new TF1("f_diff0", Form("func(x) - %f", percent), range_low, range_high);
@@ -118,6 +123,7 @@ void DrawPercents(TF1 *func, double percent, float range_low, float range_high, 
     hline->Draw("SAME");
 
     legend->AddEntry(vline, Form("%.0f%% at x = %.2f", percent*100, x_cross), "l");
+
 }
 
 void RatioPlot(TH1D *h,
@@ -133,6 +139,7 @@ void RatioPlot(TH1D *h,
                float yMax = 1.01,
                float legendX = 0.65,
                float legendY = 0.15,
+
                float fit_low = 6,
                float fit_high = 200.0,                
                vector<int> colors = {kBlack, kRed, kBlue, kGreen+2, kRed},
@@ -185,7 +192,88 @@ void RatioPlot(TH1D *h,
     tex->DrawLatex(0.40, 0.20, "nVtx > 0");
     if (ptCut != 0)
         tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV", ptCut));
+        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV/c", ptCut));
+
     c->SaveAs(outputFileName);
+
+}
+
+void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffcu, float legendx, float legendy, int logy, const char* title){
+
+    TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    TLegend* legend = new TLegend(legendx, legendy, legendx + 0.18, legendy + 0.18);
+    legend->SetTextSize(0.03);
+
+    hon->SetLineColor(kRed);
+    //hon->SetTitle("Centrality Distribution with Online Cut");
+    hon->GetXaxis()->SetTitle("Centrality (%)");
+    hon->GetYaxis()->SetTitle("Events");
+    hon->SetMinimum(0);
+    hon->Draw("HIST");
+    legend->AddEntry(hon, honcut, "l");
+
+    hoff->SetLineColor(kBlue);
+    hoff->Draw("HIST SAME");
+    legend->AddEntry(hoff, hoffcu, "l");
+
+    legend->SetLineWidth(0);
+
+    if (logy) c->SetLogy();
+
+    legend->Draw();
+    
+    c->SaveAs(title);
+
+}
+
+void CentralityRatio(TH1D* hon, const char* hcut, float legendx, float legendy,int logy, const char* onlinesel, int pTmin, const char* title){
+    
+    TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    TLegend* legend = new TLegend(legendx, legendy, legendx + 0.18, legendy + 0.18);
+    legend->SetTextSize(0.03);
+
+    hon->SetLineColor(kBlue);
+    hon->SetLineWidth(2);
+    //hon->SetTitle("Centrality Distribution with Online Cut");
+    hon->GetXaxis()->SetTitle("2x Centrality (%)");
+    hon->GetYaxis()->SetTitle("Offline HF Filter Efficiency");
+    hon->SetMinimum(0);
+    hon->Draw("HIST");
+    legend->AddEntry(hon, hcut, "l");
+    legend->SetLineWidth(0);
+
+    int nbins = hon->GetNbinsX();
+    int firstBelow99 = -1;
+    for (int i = 1; i <= nbins; ++i) {
+        if (hon->GetBinContent(i) < 0.99) {
+            firstBelow99 = i;
+            break;
+        }
+    }
+    if (firstBelow99 > 0) {
+        double xval = hon->GetBinLowEdge(firstBelow99);
+        TLine* vline99 = new TLine(xval, hon->GetMinimum(), xval, hon->GetMaximum());
+        vline99->SetLineColor(kMagenta+2);
+        vline99->SetLineStyle(7);
+        vline99->SetLineWidth(2);
+        vline99->Draw("SAME");
+        legend->AddEntry(vline99, Form("First bin < 99%% at Centrality = %.2f", xval/2.0), "l");
+    }
+
+    if (logy) c->SetLogy();
+
+    legend->Draw();
+
+    TLatex* tex = new TLatex();
+    tex->SetNDC();
+    tex->SetTextSize(0.025);
+    tex->DrawLatex(legendx, 0.55, "|V_{z}| < 15 cm");
+    tex->DrawLatex(legendx, 0.51, "PVFilter");
+    tex->DrawLatex(legendx, 0.47, "CCFilter");
+    tex->DrawLatex(legendx, 0.43, ("Min Track pT = " + to_string(pTmin) + " GeV/c").c_str());
+    tex->DrawLatex(legendx, 0.39, onlinesel);
+    
+    c->SaveAs(title);
 
 }
 
@@ -245,5 +333,58 @@ void plotter(){
     Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
     "maximum online HF signal [Adc]", "maximum offline HF energy [GeV]", 
     "HFEMaxOnlineOfflineORscatter_zoomin.pdf",  1, 2, 30, 6, 30);
+
+    TH1D *hCent16OR = (TH1D*)f->Get("Cent16OR");
+    TH1D *hCent14OR = (TH1D*)f->Get("Cent14OR");
+    TH1D *hCent16AND = (TH1D*)f->Get("Cent16AND");
+    TH1D *hCent14AND = (TH1D*)f->Get("Cent14AND");
+
+    TH1D *hCent14OR_pt3 = (TH1D*)f->Get("Cent14OR_pt3");
+    TH1D *hCent14AND_pt3 = (TH1D*)f->Get("Cent14AND_pt3");
+    TH1D *hCent16OR_pt3 = (TH1D*)f->Get("Cent16OR_pt3");
+    TH1D *hCent16AND_pt3 = (TH1D*)f->Get("Cent16AND_pt3");
+
+    TH1D *hCent16OR_wp = (TH1D*)f->Get("Cent16OR_wp");
+    TH1D *hCent14OR_wp = (TH1D*)f->Get("Cent14OR_wp");
+    TH1D *hCent16AND_wp = (TH1D*)f->Get("Cent16AND_wp");
+    TH1D *hCent14AND_wp = (TH1D*)f->Get("Cent14AND_wp");
+
+    TH1D *hCent16OR_pt3_wp = (TH1D*)f->Get("Cent16OR_wppt3");
+    TH1D *hCent14OR_pt3_wp = (TH1D*)f->Get("Cent14OR_wppt3");
+    TH1D *hCent16AND_pt3_wp = (TH1D*)f->Get("Cent16AND_wppt3");
+    TH1D *hCent14AND_pt3_wp = (TH1D*)f->Get("Cent14AND_wppt3");
+
+    TH1D *hCentratio16OR = (TH1D*)f->Get("cent_16OR");
+    TH1D *hCentratio14OR = (TH1D*)f->Get("cent_14OR");
+    TH1D *hCentratio16AND = (TH1D*)f->Get("cent_16AND");
+    TH1D *hCentratio14AND = (TH1D*)f->Get("cent_14AND");
+
+    TH1D *hCentratio16OR_pt3 = (TH1D*)f->Get("cent_16OR_pt3");
+    TH1D *hCentratio14OR_pt3 = (TH1D*)f->Get("cent_14OR_pt3");
+    TH1D *hCentratio16AND_pt3 = (TH1D*)f->Get("cent_16AND_pt3");
+    TH1D *hCentratio14AND_pt3 = (TH1D*)f->Get("cent_14AND_pt3");
+
+    CentralityPlot(hCent16OR, hCent16OR_wp, "Online 16 OR", "Offline working point: 14 OR", 0.2, 0.2, 0, "centplot16OR.pdf");
+    CentralityPlot(hCent14OR, hCent14OR_wp, "Online 14 OR", "Offline working point: 16 OR", 0.2, 0.2, 0, "centplot14OR.pdf");
+    CentralityPlot(hCent16AND, hCent16AND_wp, "Online 16 AND", "Offline working point: 14 AND", 0.2, 0.2, 0, "centplot16AND.pdf");
+    CentralityPlot(hCent14AND, hCent14AND_wp, "Online 14 AND", "Offline working point: 16 AND", 0.2, 0.2, 0, "centplot14AND.pdf");
+    
+    CentralityRatio(hCentratio16OR, "Offline 14 OR Efficiency", 0.2, 0.2, 0, "Online 16 OR", 0, "centratio16OR.pdf");
+    CentralityRatio(hCentratio14OR, "Offline 9 OR Efficiency", 0.2, 0.2, 0, "Online 14 OR", 0, "centratio14OR.pdf");
+    CentralityRatio(hCentratio16AND, "Offline 15 AND Efficiency", 0.2, 0.2, 0, "Online 16 AND", 0, "centratio16AND.pdf");
+    CentralityRatio(hCentratio14AND, "Offline 9.5 AND Efficiency", 0.2, 0.2, 0, "Online 14 AND", 0, "centratio14AND.pdf");
+
+
+    CentralityPlot(hCent16OR_pt3, hCent16OR_pt3_wp, "Online 15 OR, pt > 3", "Offline working point: 14 OR, pt > 3", 0.2, 0.2, 0, "centplot16OR_pt3.pdf");
+    CentralityPlot(hCent14OR_pt3, hCent14OR_pt3_wp, "Online 10.5 OR, pt > 3", "Offline working point: 16 OR, pt > 3", 0.2, 0.2, 0, "centplot14OR_pt3.pdf");
+    CentralityPlot(hCent16AND_pt3, hCent16AND_pt3_wp, "Online 15.5 AND, pt > 3", "Offline working point: 14 AND, pt > 3", 0.2, 0.2, 0, "centplot16AND_pt3.pdf");
+    CentralityPlot(hCent14AND_pt3, hCent14AND_pt3_wp, "Online 11 AND, pt > 3", "Offline working point: 16 AND, pt > 3", 0.2, 0.2, 0, "centplot14AND_pt3.pdf");
+
+    CentralityRatio(hCentratio16OR_pt3, "Offline 14 OR Efficiency, pt > 3", 0.2, 0.2, 0, "Online 16 OR, pt > 3", 3, "centratio16OR_pt3.pdf");
+    CentralityRatio(hCentratio14OR_pt3, "Offline 9 OR Efficiency, pt > 3", 0.2, 0.2, 0, "Online 14 OR, pt > 3", 3, "centratio14OR_pt3.pdf");
+    CentralityRatio(hCentratio16AND_pt3, "Offline 15 AND Efficiency, pt > 3", 0.2, 0.2, 0, "Online 16 AND, pt > 3", 3, "centratio16AND_pt3.pdf");
+    CentralityRatio(hCentratio14AND_pt3, "Offline 9.5 AND Efficiency, pt > 3", 0.2, 0.2, 0, "Online 14 AND, pt > 3", 3, "centratio14AND_pt3.pdf");  
+
+    
   cout << "Done!" << endl;
 }
