@@ -206,7 +206,7 @@ void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffc
 
     hon->SetLineColor(kRed);
     //hon->SetTitle("Centrality Distribution with Online Cut");
-    hon->GetXaxis()->SetTitle("Centrality (%)");
+    hon->GetXaxis()->SetTitle("2x Centrality (%)");
     hon->GetYaxis()->SetTitle("Events");
     hon->SetMinimum(0);
     hon->Draw("HIST");
@@ -324,14 +324,14 @@ void plotter(){
     "minimum offline HF energy [GeV]",  "minimum online HF signal [Adc]",
     "HFEMaxOnlineOfflineANDscatter.pdf", 1, 0, 400, 0, 150);
     Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
-    "maximum offline HF signal [Adc]",  "maximum online HF energy [GeV]",
+    "maximum offline HF signal [GeV]",  "maximum online HF energy [Adc]",
     "HFEMaxOnlineOfflineORscatter.pdf",  1, 0, 400, 0, 100);
 
      Plotter2D({f->Get("HFEMaxOnlineOfflineANDscatter")},"Minimum offline VS online HF",
     "minimum offline HF energy [GeV]", "minimum online HF signal [Adc]",
     "HFEMaxOnlineOfflineANDscatter_zoomin.pdf", 1, 2, 30, 6, 30);
     Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
-    "maximum online HF signal [Adc]", "maximum offline HF energy [GeV]", 
+    "maximum offline HF signal [GeV]", "maximum online HF energy [Adc]", 
     "HFEMaxOnlineOfflineORscatter_zoomin.pdf",  1, 2, 30, 6, 30);
 
     TH1D *hCent16OR = (TH1D*)f->Get("Cent16OR");
