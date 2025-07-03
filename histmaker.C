@@ -164,7 +164,7 @@ void histmaker(){
     TCut wp16OR = eventsel && HFONLINE(16, "||") && HFOFFLINE(15,"||");
     TCut wp16AND = eventsel && HFONLINE(16, "&&") && HFOFFLINE(15.5,"&&");
     TCut wp14OR = eventsel && HFONLINE(14, "||") && HFOFFLINE(10.5,"||");
-    TCut wp14AND = eventsel && HFONLINE(14, "&&") && HFOFFLINE(12,"&&");
+    TCut wp14AND = eventsel && HFONLINE(14, "&&") && HFOFFLINE(11,"&&");
 
     TCut wp16OR_pt3 = eventsel && HFONLINE(16, "||") && HFOFFLINE(14,"||") && TRKPTCUT(3.0);
     TCut wp16AND_pt3 = eventsel && HFONLINE(16, "&&") && HFOFFLINE(15,"&&") && TRKPTCUT(3.0);

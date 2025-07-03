@@ -188,19 +188,19 @@ void RatioPlot(TH1D *h,
     tex->SetNDC();
     tex->DrawLatex(0.40, 0.35, "PVFilter");
     tex->DrawLatex(0.40, 0.30, "CCFilter");
-    tex->DrawLatex(0.40, 0.25, "|VZ| < 15");
+    tex->DrawLatex(0.40, 0.25, "#left|V_{Z}#right| < 15");
     tex->DrawLatex(0.40, 0.20, "nVtx > 0");
-    if (ptCut != 0)
-        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV", ptCut));
-        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV/c", ptCut));
+    tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV/c", ptCut));
 
     c->SaveAs(outputFileName);
 
 }
 
-void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffcu, float legendx, float legendy, int logy, const char* title){
+void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffcu, float legendx, float legendy, int logy, const char* title, int ptCut = 0, float labely = 0.45){
 
     TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    c->SetLeftMargin(0.15);
+    c->SetBottomMargin(0.15);
     TLegend* legend = new TLegend(legendx, legendy, legendx + 0.18, legendy + 0.18);
     legend->SetTextSize(0.03);
 
@@ -221,6 +221,15 @@ void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffc
     if (logy) c->SetLogy();
 
     legend->Draw();
+
+    TLatex *tex = new TLatex();
+    tex->SetTextSize(0.03);
+    tex->SetNDC();
+    tex->DrawLatex(0.6, labely, "PVFilter");
+    tex->DrawLatex(0.6, labely-0.05, "CCFilter");
+    tex->DrawLatex(0.6, labely-2*0.05, "#left|V_{Z}#right| < 15");
+    tex->DrawLatex(0.6, labely-3*0.05, "nVtx > 0");
+    tex->DrawLatex(0.6, labely-4*0.05, Form("track p_{T} > %i GeV/c", ptCut));
     
     c->SaveAs(title);
 
@@ -267,11 +276,12 @@ void CentralityRatio(TH1D* hon, const char* hcut, float legendx, float legendy,i
     TLatex* tex = new TLatex();
     tex->SetNDC();
     tex->SetTextSize(0.025);
-    tex->DrawLatex(legendx, 0.55, "|V_{z}| < 15 cm");
+    tex->DrawLatex(legendx, 0.55, "#left|V_{z}#right| < 15 cm");
     tex->DrawLatex(legendx, 0.51, "PVFilter");
     tex->DrawLatex(legendx, 0.47, "CCFilter");
     tex->DrawLatex(legendx, 0.43, ("Min Track pT = " + to_string(pTmin) + " GeV/c").c_str());
-    tex->DrawLatex(legendx, 0.39, onlinesel);
+    tex->DrawLatex(legendx, 0.39, "nVtx > 0");
+    tex->DrawLatex(legendx, 0.35, onlinesel);
     
     c->SaveAs(title);
 
@@ -364,26 +374,26 @@ void plotter(){
     TH1D *hCentratio16AND_pt3 = (TH1D*)f->Get("cent_16AND_pt3");
     TH1D *hCentratio14AND_pt3 = (TH1D*)f->Get("cent_14AND_pt3");
 
-    CentralityPlot(hCent16OR, hCent16OR_wp, "Online 16 OR", "Offline working point: 14 OR", 0.2, 0.2, 0, "centplot16OR.pdf");
-    CentralityPlot(hCent14OR, hCent14OR_wp, "Online 14 OR", "Offline working point: 16 OR", 0.2, 0.2, 0, "centplot14OR.pdf");
-    CentralityPlot(hCent16AND, hCent16AND_wp, "Online 16 AND", "Offline working point: 14 AND", 0.2, 0.2, 0, "centplot16AND.pdf");
-    CentralityPlot(hCent14AND, hCent14AND_wp, "Online 14 AND", "Offline working point: 16 AND", 0.2, 0.2, 0, "centplot14AND.pdf");
+    CentralityPlot(hCent16OR, hCent16OR_wp, "Online 16 OR", "Offline working point: 15 OR", 0.2, 0.2, 0, "centplot16OR.pdf", 0, 0.45);
+    CentralityPlot(hCent14OR, hCent14OR_wp, "Online 14 OR", "Offline working point: 10.5 OR", 0.2, 0.2, 0, "centplot14OR.pdf", 0, 0.45);
+    CentralityPlot(hCent16AND, hCent16AND_wp, "Online 16 AND", "Offline working point: 15.5 AND", 0.2, 0.2, 0, "centplot16AND.pdf", 0, 0.45);
+    CentralityPlot(hCent14AND, hCent14AND_wp, "Online 14 AND", "Offline working point: 11 AND", 0.2, 0.2, 0, "centplot14AND.pdf", 0, 0.45);
     
-    CentralityRatio(hCentratio16OR, "Offline 14 OR Efficiency", 0.2, 0.2, 0, "Online 16 OR", 0, "centratio16OR.pdf");
-    CentralityRatio(hCentratio14OR, "Offline 9 OR Efficiency", 0.2, 0.2, 0, "Online 14 OR", 0, "centratio14OR.pdf");
-    CentralityRatio(hCentratio16AND, "Offline 15 AND Efficiency", 0.2, 0.2, 0, "Online 16 AND", 0, "centratio16AND.pdf");
-    CentralityRatio(hCentratio14AND, "Offline 9.5 AND Efficiency", 0.2, 0.2, 0, "Online 14 AND", 0, "centratio14AND.pdf");
+    CentralityRatio(hCentratio16OR, "Offline 15 OR Efficiency", 0.2, 0.2, 0, "Online 16 OR", 0, "centratio16OR.pdf");
+    CentralityRatio(hCentratio14OR, "Offline 10.5 OR Efficiency", 0.2, 0.2, 0, "Online 14 OR", 0, "centratio14OR.pdf");
+    CentralityRatio(hCentratio16AND, "Offline 15.5 AND Efficiency", 0.2, 0.2, 0, "Online 16 AND", 0, "centratio16AND.pdf");
+    CentralityRatio(hCentratio14AND, "Offline 11 AND Efficiency", 0.2, 0.2, 0, "Online 14 AND", 0, "centratio14AND.pdf");
 
 
-    CentralityPlot(hCent16OR_pt3, hCent16OR_pt3_wp, "Online 15 OR, pt > 3", "Offline working point: 14 OR, pt > 3", 0.2, 0.2, 0, "centplot16OR_pt3.pdf");
-    CentralityPlot(hCent14OR_pt3, hCent14OR_pt3_wp, "Online 10.5 OR, pt > 3", "Offline working point: 16 OR, pt > 3", 0.2, 0.2, 0, "centplot14OR_pt3.pdf");
-    CentralityPlot(hCent16AND_pt3, hCent16AND_pt3_wp, "Online 15.5 AND, pt > 3", "Offline working point: 14 AND, pt > 3", 0.2, 0.2, 0, "centplot16AND_pt3.pdf");
-    CentralityPlot(hCent14AND_pt3, hCent14AND_pt3_wp, "Online 11 AND, pt > 3", "Offline working point: 16 AND, pt > 3", 0.2, 0.2, 0, "centplot14AND_pt3.pdf");
+    CentralityPlot(hCent16OR_pt3, hCent16OR_pt3_wp, "Online 16 OR, pt > 3", "Offline working point: 14 OR, pt > 3", 0.50, 0.7, 0, "centplot16OR_pt3.pdf", 3, 0.65);
+    CentralityPlot(hCent14OR_pt3, hCent14OR_pt3_wp, "Online 14 OR, pt > 3", "Offline working point: 9 OR, pt > 3", 0.50, 0.7, 0, "centplot14OR_pt3.pdf", 3, 0.65);
+    CentralityPlot(hCent16AND_pt3, hCent16AND_pt3_wp, "Online 16 AND, pt > 3", "Offline working point: 15 AND, pt > 3", 0.50, 0.7, 0, "centplot16AND_pt3.pdf", 3, 0.65);
+    CentralityPlot(hCent14AND_pt3, hCent14AND_pt3_wp, "Online 14 AND, pt > 3", "Offline working point: 9.5 AND, pt > 3", 0.50, 0.7, 0, "centplot14AND_pt3.pdf", 3, 0.65);
 
-    CentralityRatio(hCentratio16OR_pt3, "Offline 14 OR Efficiency, pt > 3", 0.2, 0.2, 0, "Online 16 OR, pt > 3", 3, "centratio16OR_pt3.pdf");
-    CentralityRatio(hCentratio14OR_pt3, "Offline 9 OR Efficiency, pt > 3", 0.2, 0.2, 0, "Online 14 OR, pt > 3", 3, "centratio14OR_pt3.pdf");
-    CentralityRatio(hCentratio16AND_pt3, "Offline 15 AND Efficiency, pt > 3", 0.2, 0.2, 0, "Online 16 AND, pt > 3", 3, "centratio16AND_pt3.pdf");
-    CentralityRatio(hCentratio14AND_pt3, "Offline 9.5 AND Efficiency, pt > 3", 0.2, 0.2, 0, "Online 14 AND, pt > 3", 3, "centratio14AND_pt3.pdf");  
+    CentralityRatio(hCentratio16OR_pt3, "Offline 14 OR Efficiency, pt > 3", 0.15, 0.15, 0, "Online 16 OR, pt > 3", 3, "centratio16OR_pt3.pdf");
+    CentralityRatio(hCentratio14OR_pt3, "Offline 9 OR Efficiency, pt > 3", 0.15, 0.15, 0, "Online 14 OR, pt > 3", 3, "centratio14OR_pt3.pdf");
+    CentralityRatio(hCentratio16AND_pt3, "Offline 15 AND Efficiency, pt > 3", 0.15, 0.15, 0, "Online 16 AND, pt > 3", 3, "centratio16AND_pt3.pdf");
+    CentralityRatio(hCentratio14AND_pt3, "Offline 9.5 AND Efficiency, pt > 3", 0.15, 0.15, 0, "Online 14 AND, pt > 3", 3, "centratio14AND_pt3.pdf");  
 
     
   cout << "Done!" << endl;
