@@ -206,7 +206,7 @@ void CentralityPlot(TH1D *hon, TH1D *hoff, const char* honcut, const char* hoffc
 
     hon->SetLineColor(kRed);
     //hon->SetTitle("Centrality Distribution with Online Cut");
-    hon->GetXaxis()->SetTitle("Centrality (%)");
+    hon->GetXaxis()->SetTitle("2x Centrality (%)");
     hon->GetYaxis()->SetTitle("Events");
     hon->SetMinimum(0);
     hon->Draw("HIST");
