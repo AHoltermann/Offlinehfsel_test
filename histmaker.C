@@ -187,10 +187,10 @@ void histmaker(){
     TH2D *HFEMaxPlusMinusScatter = new TH2D("HFEMaxPlusMinusScatter", "HFEMaxPlus vs HFEMaxMinus", 201, -0.5, 200.5, 201, -0.5, 200.5);
     HFEPlusMinusScatter(T, eventsel, HFEMaxPlusMinusScatter);
 
-    TH2D *HFEMaxOnlineOfflineANDScatter = new TH2D("HFEMaxOnlineOfflineANDscatter", "Minimum online VS offline HF", 401, -0.5, 400.5, 151, -0.5, 200.5);
+    TH2D *HFEMaxOnlineOfflineANDScatter = new TH2D("HFEMaxOnlineOfflineANDscatter", "Minimum online VS offline HF", 401, -0.5, 400.5, 151, -0.5, 150.5);
     HFEOnlineOfflineScatter(T, eventsel, HFEMaxOnlineOfflineANDScatter, true);
 
-    TH2D *HFEMaxOnlineOfflineORScatter = new TH2D("HFEMaxOnlineOfflineORscatter", "Maximum online VS offline HF", 401, -0.5, 400.5, 101, -0.5, 200.5);
+    TH2D *HFEMaxOnlineOfflineORScatter = new TH2D("HFEMaxOnlineOfflineORscatter", "Maximum online VS offline HF", 401, -0.5, 400.5, 101, -0.5, 100.5);
     HFEOnlineOfflineScatter(T, eventsel, HFEMaxOnlineOfflineORScatter, false);
 
     TH1D* minHFEMaxEvent = new TH1D("minHFEMaxeventsel", "HFEMax min with event selection", 101, -0.5, 200.5);
