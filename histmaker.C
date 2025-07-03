@@ -41,16 +41,16 @@ void ADC_Minimum(TTree* T, TCut t, TH1D* h) {
     T->Project(h->GetName(), expr, t);
 }
 
-void HFEMaxMinScatter(TTree* T, TCut t, TH2D* h) {
-    TString exprX = "HFEMaxPlus";
-    TString exprY = "HFEMaxMinus";
-    T->Project(h->GetName(), exprX + ":" + exprY, t);
+void HFEOnlineOfflineScatter(TTree* T, TCut t, TH2D* h, bool isAND) { //2D hist of same online and offline
+    TString exprX = isAND ? Form("TMath::Max(%s, %s)", "HFEMaxPlus", "HFEMaxMinus") : Form("TMath::Min(%s, %s)", "HFEMaxPlus", "HFEMaxMinus");
+    TString exprY = isAND ? Form("TMath::Max(%s, %s)", "mMaxL1HFAdcPlus", "mMaxL1HFAdcMinus") : Form("TMath::Min(%s, %s)", "mMaxL1HFAdcPlus", "mMaxL1HFAdcMinus");
+    T->Project(h->GetName(), exprY + ":" + exprX, t);
 }
 
 void HFEPlusMinusScatter(TTree* T, TCut t, TH2D* h) {
     TString exprX = "HFEMaxPlus";
     TString exprY = "HFEMaxMinus";
-    T->Project(h->GetName(), exprX + ":" + exprY, t);
+    T->Project(h->GetName(), exprY + ":" + exprX, t);
 }
 
 Long64_t HowManyPass(TTree* T, TCut t){
@@ -167,6 +167,15 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
+    TH2D *HFEMaxPlusMinusScatter = new TH2D("HFEMaxPlusMinusScatter", "HFEMaxPlus vs HFEMaxMinus", 201, -0.5, 200.5, 201, -0.5, 200.5);
+    HFEPlusMinusScatter(T, eventsel, HFEMaxPlusMinusScatter);
+
+    TH2D *HFEMaxOnlineOfflineANDScatter = new TH2D("HFEMaxOnlineOfflineANDscatter", "Minimum online VS offline HF", 401, -0.5, 400.5, 151, -0.5, 200.5);
+    HFEOnlineOfflineScatter(T, eventsel, HFEMaxOnlineOfflineANDScatter, true);
+
+    TH2D *HFEMaxOnlineOfflineORScatter = new TH2D("HFEMaxOnlineOfflineORscatter", "Maximum online VS offline HF", 401, -0.5, 400.5, 101, -0.5, 200.5);
+    HFEOnlineOfflineScatter(T, eventsel, HFEMaxOnlineOfflineORScatter, false);
+
     TH1D* minHFEMaxEvent = new TH1D("minHFEMaxeventsel", "HFEMax min with event selection", 101, -0.5, 200.5);
     TH1D *minHFEMaxEventpt2 = new TH1D("minHFEMaxeventsel_pt2", "HFEMax min with event selection and pt > 2", 101, -0.5, 200.5);
     TH1D *minHFEMaxEventpt3 = new TH1D("minHFEMaxeventsel_pt3", "HFEMax min with event selection and pt > 3", 101, -0.5, 200.5);
@@ -252,6 +261,11 @@ void histmaker(){
     /////////////////////////////
 
     TFile* outfile = new TFile("online.root", "RECREATE");
+
+    HFEMaxPlusMinusScatter->Write();
+    HFEMaxOnlineOfflineANDScatter->Write();
+    HFEMaxOnlineOfflineORScatter->Write();
+
     minHFEMaxEvent->Write();
     minHFEMaxEventpt2->Write();
     minHFEMaxEventpt3->Write();

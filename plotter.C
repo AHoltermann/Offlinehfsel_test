@@ -50,8 +50,58 @@ void Plotter1D(vector<TObject*> objects,  // these vectors should all be the sam
 
 }
 
+void Plotter2D(vector<TObject*> objects,  // TH2D objects first, TF1 after and TLines last
+               const char* title,
+               const char* xAxisTitle,
+               const char* yAxisTitle,
+               const char* outputFileName = "plotter_output.pdf",
+               int logy = 0,
+               float xMin = 0.0,
+               float xMax = 200.0,
+               float yMin = 0.0,
+               float yMax = 200.0,
+               vector<int> colors = {kRed, kBlue, kGreen+2})
+{
+    
 
-//function to draw percent lines on ratio plot
+    TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    int colorIdx = 0;
+    int labelIdx = 0;
+    for (size_t i = 0; i < objects.size(); ++i) {
+        TH2D *h = dynamic_cast<TH2D*>(objects[i]);
+        TF1  *f = dynamic_cast<TF1*>(objects[i]);
+        TLine *l = dynamic_cast<TLine*>(objects[i]);
+        if (h) { 
+            h->SetTitle(title);//setting custom coloring for histo could be added
+            h->GetXaxis()->SetTitle(xAxisTitle); //could add TLatex to add some labels
+            h->GetYaxis()->SetTitle(yAxisTitle);
+            h->GetXaxis()->SetRangeUser(xMin, xMax);
+            h->GetYaxis()->SetRangeUser(yMin, yMax);
+            if (logy) c->SetLogz();
+            h->Draw(colorIdx == 0 ? "COLZ" : "COLZ SAME");
+        } else if (f) {
+            f->SetLineColor(colors[colorIdx]);
+            f->Draw("SAME");
+            colorIdx++;
+            labelIdx++;
+        }
+        else if (l) {
+            l->SetLineColor(colors[colorIdx]);
+            l->SetLineStyle(2);
+            l->Draw("SAME");
+            colorIdx++;
+            labelIdx++;
+
+        }
+    }
+
+    c->SaveAs(outputFileName);
+
+}
+
+
+
+//get and draw percents on ratio plot
 void DrawPercents(TF1 *func, double percent, float range_low, float range_high, Color_t color, TLegend *legend) 
 {
     TF1 *f_diff0 = new TF1("f_diff0", Form("func(x) - %f", percent), range_low, range_high);
@@ -83,7 +133,7 @@ void RatioPlot(TH1D *h,
                float yMax = 1.01,
                float legendX = 0.65,
                float legendY = 0.15,
-               float fit_low = 5,
+               float fit_low = 6,
                float fit_high = 200.0,                
                vector<int> colors = {kBlack, kRed, kBlue, kGreen+2, kRed},
                vector<float> percents = {0.9, 0.95, 0.99}) {
@@ -134,8 +184,7 @@ void RatioPlot(TH1D *h,
     tex->DrawLatex(0.40, 0.25, "|VZ| < 15");
     tex->DrawLatex(0.40, 0.20, "nVtx > 0");
     if (ptCut != 0)
-        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV/c", ptCut));
-
+        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV", ptCut));
     c->SaveAs(outputFileName);
 
 }
@@ -180,5 +229,21 @@ void plotter(){
     "maximum HFEMax [GeV]", "Ratio", "ratio16ORpt3.pdf", 3);
     RatioPlot((TH1D*)f->Get("ratio16ORpt4"),"Ratio of events with and without online 16 OR, pt > 4 cut",
     "maximum HFEMax [GeV]", "Ratio", "ratio16ORpt4.pdf", 4);
+
+    Plotter2D({f->Get("HFEMaxPlusMinusScatter")},"HFEMaxPlus vs HFEMaxMinus","HFEMaxPlus [GeV]",
+    "HFEMaxMinus [GeV]","HFEMaxPlusMinusScatter.pdf", 1);
+    Plotter2D({f->Get("HFEMaxOnlineOfflineANDscatter")},"Minimum offline VS online HF",
+    "minimum offline HF energy [GeV]",  "minimum online HF signal [Adc]",
+    "HFEMaxOnlineOfflineANDscatter.pdf", 1, 0, 400, 0, 150);
+    Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
+    "maximum offline HF signal [Adc]",  "maximum online HF energy [GeV]",
+    "HFEMaxOnlineOfflineORscatter.pdf",  1, 0, 400, 0, 100);
+
+     Plotter2D({f->Get("HFEMaxOnlineOfflineANDscatter")},"Minimum offline VS online HF",
+    "minimum offline HF energy [GeV]", "minimum online HF signal [Adc]",
+    "HFEMaxOnlineOfflineANDscatter_zoomin.pdf", 1, 0, 30, 0, 30);
+    Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
+    "maximum online HF signal [Adc]", "maximum offline HF energy [GeV]", 
+    "HFEMaxOnlineOfflineORscatter_zoomin.pdf",  1, 0, 30, 0, 30);
   cout << "Done!" << endl;
 }
