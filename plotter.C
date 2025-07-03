@@ -241,9 +241,9 @@ void plotter(){
 
      Plotter2D({f->Get("HFEMaxOnlineOfflineANDscatter")},"Minimum offline VS online HF",
     "minimum offline HF energy [GeV]", "minimum online HF signal [Adc]",
-    "HFEMaxOnlineOfflineANDscatter_zoomin.pdf", 1, 0, 30, 0, 30);
+    "HFEMaxOnlineOfflineANDscatter_zoomin.pdf", 1, 2, 30, 6, 30);
     Plotter2D({f->Get("HFEMaxOnlineOfflineORscatter")},"Maximum offline VS online HF",
     "maximum online HF signal [Adc]", "maximum offline HF energy [GeV]", 
-    "HFEMaxOnlineOfflineORscatter_zoomin.pdf",  1, 0, 30, 0, 30);
+    "HFEMaxOnlineOfflineORscatter_zoomin.pdf",  1, 2, 30, 6, 30);
   cout << "Done!" << endl;
 }
