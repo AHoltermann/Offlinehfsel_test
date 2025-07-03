@@ -167,14 +167,14 @@ void histmaker(){
     /////////////////////////////
     /////////////////////////////
 
-    TH1D* minHFEMaxEvent = new TH1D("minHFEMaxeventsel", "HFEMax min with event selection", 201, -0.5, 200.5);
-    TH1D *minHFEMaxEventpt2 = new TH1D("minHFEMaxeventsel_pt2", "HFEMax min with event selection and pt > 2", 201, -0.5, 200.5);
-    TH1D *minHFEMaxEventpt3 = new TH1D("minHFEMaxeventsel_pt3", "HFEMax min with event selection and pt > 3", 201, -0.5, 200.5);
-    TH1D *minHFEMaxEventpt4 = new TH1D("minHFEMaxeventsel_pt4", "HFEMax min with event selection and pt > 4", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline14AND = new TH1D("minHFEMaxevent_online14AND", "HFEMax min with event and online 14 AND selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline14ANDpt2 = new TH1D("minHFEMaxevent_online14AND_pt2", "HFEMax min with event and online 14 AND pt > 2 selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline14ANDpt3 = new TH1D("minHFEMaxevent_online14AND_pt3", "HFEMax min with event and online 14 AND pt > 3 selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline14ANDpt4 = new TH1D("minHFEMaxevent_online14AND_pt4", "HFEMax min with event and online 14 AND pt > 4 selection", 201, -0.5, 200.5);
+    TH1D* minHFEMaxEvent = new TH1D("minHFEMaxeventsel", "HFEMax min with event selection", 101, -0.5, 200.5);
+    TH1D *minHFEMaxEventpt2 = new TH1D("minHFEMaxeventsel_pt2", "HFEMax min with event selection and pt > 2", 101, -0.5, 200.5);
+    TH1D *minHFEMaxEventpt3 = new TH1D("minHFEMaxeventsel_pt3", "HFEMax min with event selection and pt > 3", 101, -0.5, 200.5);
+    TH1D *minHFEMaxEventpt4 = new TH1D("minHFEMaxeventsel_pt4", "HFEMax min with event selection and pt > 4", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline14AND = new TH1D("minHFEMaxevent_online14AND", "HFEMax min with event and online 14 AND selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline14ANDpt2 = new TH1D("minHFEMaxevent_online14AND_pt2", "HFEMax min with event and online 14 AND pt > 2 selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline14ANDpt3 = new TH1D("minHFEMaxevent_online14AND_pt3", "HFEMax min with event and online 14 AND pt > 3 selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline14ANDpt4 = new TH1D("minHFEMaxevent_online14AND_pt4", "HFEMax min with event and online 14 AND pt > 4 selection", 101, -0.5, 200.5);
 
     HFEMax_Minimum(T, eventsel, minHFEMaxEvent);
     HFEMax_Minimum(T, eventsel_pt2, minHFEMaxEventpt2);
@@ -190,14 +190,14 @@ void histmaker(){
     TH1D* ratio14ANDpt3 = Divide(minHFEMaxEventOnline14ANDpt3, minHFEMaxEventpt3, "ratio14ANDpt3");
     TH1D* ratio14ANDpt4 = Divide(minHFEMaxEventOnline14ANDpt4, minHFEMaxEventpt4, "ratio14ANDpt4");
 
-    TH1D *maxHFEMaxEvent = new TH1D("maxHFEMaxeventsel", "HFEMax max with event selection", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventpt2 = new TH1D("maxHFEMaxeventsel_pt2", "HFEMax max with event selection and pt > 2", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventpt3 = new TH1D("maxHFEMaxeventsel_pt3", "HFEMax max with event selection and pt > 3", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventpt4 = new TH1D("maxHFEMaxeventsel_pt4", "HFEMax max with event selection and pt > 4", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventOnline14OR= new TH1D("maxHFEMaxevent_online14OR", "HFEMax max with event and online 14 OR selection", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventOnline14ORpt2 = new TH1D("maxHFEMaxevent_online14ORpt2", "HFEMax max with event and online 14 OR  and pt > 2 selection", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventOnline14ORpt3 = new TH1D("maxHFEMaxevent_online14ORpt3", "HFEMax max with event and online 14 OR  and pt > 3 selection", 201, -0.5, 200.5);
-    TH1D *maxHFEMaxEventOnline14ORpt4 = new TH1D("maxHFEMaxevent_online14ORpt4", "HFEMax max with event and online 14 OR  and pt > 4 selection", 201, -0.5, 200.5); 
+    TH1D *maxHFEMaxEvent = new TH1D("maxHFEMaxeventsel", "HFEMax max with event selection", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventpt2 = new TH1D("maxHFEMaxeventsel_pt2", "HFEMax max with event selection and pt > 2", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventpt3 = new TH1D("maxHFEMaxeventsel_pt3", "HFEMax max with event selection and pt > 3", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventpt4 = new TH1D("maxHFEMaxeventsel_pt4", "HFEMax max with event selection and pt > 4", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventOnline14OR= new TH1D("maxHFEMaxevent_online14OR", "HFEMax max with event and online 14 OR selection", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventOnline14ORpt2 = new TH1D("maxHFEMaxevent_online14ORpt2", "HFEMax max with event and online 14 OR  and pt > 2 selection", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventOnline14ORpt3 = new TH1D("maxHFEMaxevent_online14ORpt3", "HFEMax max with event and online 14 OR  and pt > 3 selection", 101, -0.5, 200.5);
+    TH1D *maxHFEMaxEventOnline14ORpt4 = new TH1D("maxHFEMaxevent_online14ORpt4", "HFEMax max with event and online 14 OR  and pt > 4 selection", 101, -0.5, 200.5); 
 
     HFEMax_Maximum(T, eventsel, maxHFEMaxEvent);
     HFEMax_Maximum(T, eventsel_pt2, maxHFEMaxEventpt2);
@@ -213,10 +213,10 @@ void histmaker(){
     TH1D* ratio14ORpt3 = Divide(maxHFEMaxEventOnline14ORpt3, maxHFEMaxEventpt3, "ratio14ORpt3");
     TH1D* ratio14ORpt4 = Divide(maxHFEMaxEventOnline14ORpt4, maxHFEMaxEventpt4, "ratio14ORpt4");
 
-    TH1D* minHFEMaxEventOnline16AND = new TH1D("minHFEMaxevent_online16AND", "HFEMax min with event and online 16 AND selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline16ANDpt2 = new TH1D("minHFEMaxevent_online16AND_pt2", "HFEMax min with event and online 16 AND pt > 2 selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline16ANDpt3 = new TH1D("minHFEMaxevent_online16AND_pt3", "HFEMax min with event and online 16 AND pt > 3 selection", 201, -0.5, 200.5);
-    TH1D* minHFEMaxEventOnline16ANDpt4 = new TH1D("minHFEMaxevent_online16AND_pt4", "HFEMax min with event and online 16 AND pt > 4 selection", 201, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline16AND = new TH1D("minHFEMaxevent_online16AND", "HFEMax min with event and online 16 AND selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline16ANDpt2 = new TH1D("minHFEMaxevent_online16AND_pt2", "HFEMax min with event and online 16 AND pt > 2 selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline16ANDpt3 = new TH1D("minHFEMaxevent_online16AND_pt3", "HFEMax min with event and online 16 AND pt > 3 selection", 101, -0.5, 200.5);
+    TH1D* minHFEMaxEventOnline16ANDpt4 = new TH1D("minHFEMaxevent_online16AND_pt4", "HFEMax min with event and online 16 AND pt > 4 selection", 101, -0.5, 200.5);
 
     HFEMax_Minimum(T, event_online16AND, minHFEMaxEventOnline16AND);
     HFEMax_Minimum(T, event_online16AND_pt2, minHFEMaxEventOnline16ANDpt2);
@@ -228,10 +228,10 @@ void histmaker(){
     TH1D* ratio16ANDpt3 = Divide(minHFEMaxEventOnline16ANDpt3, minHFEMaxEventpt3, "ratio16ANDpt3");
     TH1D* ratio16ANDpt4 = Divide(minHFEMaxEventOnline16ANDpt4, minHFEMaxEventpt4, "ratio16ANDpt4");
 
-    TH1D* maxHFEMaxEventOnline16OR = new TH1D("maxHFEMaxevent_online16OR", "HFEMax max with event and online 16 OR selection", 201, -0.5, 200.5);
-    TH1D* maxHFEMaxEventOnline16ORpt2 = new TH1D("maxHFEMaxevent_online16OR_pt2", "HFEMax max with event and online 16 OR pt > 2 selection", 201, -0.5, 200.5);
-    TH1D* maxHFEMaxEventOnline16ORpt3 = new TH1D("maxHFEMaxevent_online16OR_pt3", "HFEMax max with event and online 16 OR pt > 3 selection", 201, -0.5, 200.5);
-    TH1D* maxHFEMaxEventOnline16ORpt4 = new TH1D("maxHFEMaxevent_online16OR_pt4", "HFEMax max with event and online 16 OR pt > 4 selection", 201, -0.5, 200.5); 
+    TH1D* maxHFEMaxEventOnline16OR = new TH1D("maxHFEMaxevent_online16OR", "HFEMax max with event and online 16 OR selection", 101, -0.5, 200.5);
+    TH1D* maxHFEMaxEventOnline16ORpt2 = new TH1D("maxHFEMaxevent_online16OR_pt2", "HFEMax max with event and online 16 OR pt > 2 selection", 101, -0.5, 200.5);
+    TH1D* maxHFEMaxEventOnline16ORpt3 = new TH1D("maxHFEMaxevent_online16OR_pt3", "HFEMax max with event and online 16 OR pt > 3 selection", 101, -0.5, 200.5);
+    TH1D* maxHFEMaxEventOnline16ORpt4 = new TH1D("maxHFEMaxevent_online16OR_pt4", "HFEMax max with event and online 16 OR pt > 4 selection", 101, -0.5, 200.5); 
 
     HFEMax_Maximum(T, event_online16OR, maxHFEMaxEventOnline16OR);
     HFEMax_Maximum(T, event_online16OR_pt2, maxHFEMaxEventOnline16ORpt2);

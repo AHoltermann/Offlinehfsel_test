@@ -78,7 +78,7 @@ void RatioPlot(TH1D *h,
                int ptCut = 0,
                //vector<float> init_guess,,
                float xMin = 0.0,
-               float xMax = 200.0,
+               float xMax = 100.0,
                float yMin = 0.0,
                float yMax = 1.01,
                float legendX = 0.65,
@@ -129,11 +129,12 @@ void RatioPlot(TH1D *h,
     TLatex *tex = new TLatex();
     tex->SetTextSize(0.03);
     tex->SetNDC();
-    tex->DrawLatex(0.65, 0.85, "PVFilter");
-    tex->DrawLatex(0.65, 0.80, "ClusterCompatibilityFilter");
-    tex->DrawLatex(0.65, 0.75, "|VZ| < 15");
+    tex->DrawLatex(0.40, 0.35, "PVFilter");
+    tex->DrawLatex(0.40, 0.30, "CCFilter");
+    tex->DrawLatex(0.40, 0.25, "|VZ| < 15");
+    tex->DrawLatex(0.40, 0.20, "nVtx > 0");
     if (ptCut != 0)
-        tex->DrawLatex(0.15, 0.65, Form("p_{T} > %i GeV/c", ptCut));
+        tex->DrawLatex(0.40, 0.15, Form("track p_{T} > %i GeV/c", ptCut));
 
     c->SaveAs(outputFileName);
 
@@ -179,43 +180,5 @@ void plotter(){
     "maximum HFEMax [GeV]", "Ratio", "ratio16ORpt3.pdf", 3);
     RatioPlot((TH1D*)f->Get("ratio16ORpt4"),"Ratio of events with and without online 16 OR, pt > 4 cut",
     "maximum HFEMax [GeV]", "Ratio", "ratio16ORpt4.pdf", 4);
-    
-    /*RatioPlot((TH1D*)f->Get("ratio14OR"),"Ratio of events with and without online 14 OR cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio14OR.pdf");
-    RatioPlot((TH1D*)f->Get("ratio14ORpt2"),"Ratio of events with and without online 14 OR pt > 2 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio14ORpt2.pdf", 2);
-    RatioPlot((TH1D*)f->Get("ratio14ORpt3"),"Ratio of events with and without online 14 OR pt > 3 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio14ORpt3.pdf", 3);
-    RatioPlot((TH1D*)f->Get("ratio14ORpt4"),"Ratio of events with and without online 14 OR pt > 4 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio14ORpt4.pdf", 4); 
-
-    RatioPlot((TH1D*)f->Get("ratio16AND"),"Ratio of events with and without online 16 AND cut",
-    "minimum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,4.0, 200.0,"ratio16AND.pdf");
-    RatioPlot((TH1D*)f->Get("ratio16ANDpt2"),"Ratio of events with and without online 16 AND pt > 2 cut",
-    "minimum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ANDpt2.pdf", 2);
-    RatioPlot((TH1D*)f->Get("ratio16ANDpt3"),"Ratio of events with and without online 16 AND pt > 3 cut",
-    "minimum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ANDpt3.pdf", 3);
-    RatioPlot((TH1D*)f->Get("ratio16ANDpt4"),"Ratio of events with and without online 16 AND pt > 4 cut",
-    "minimum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ANDpt4.pdf", 4);
-
-    RatioPlot((TH1D*)f->Get("ratio16OR"),"Ratio of events with and without online 16 OR cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16OR.pdf");
-    RatioPlot((TH1D*)f->Get("ratio16ORpt2"),"Ratio of events with and without online 16 OR pt > 2 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ORpt2.pdf", 2);
-    RatioPlot((TH1D*)f->Get("ratio16ORpt3"),"Ratio of events with and without online 16 OR pt > 3 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ORpt3.pdf", 3);
-    RatioPlot((TH1D*)f->Get("ratio16ORpt4"),"Ratio of events with and without online 16 OR pt > 4 cut",
-    "maximum HFEMax [GeV]",-0.5, 200.5, 0.0, 1.01,0.65, 0.15,
-    4.0, 200.0,"ratio16ORpt4.pdf", 4);*/
   cout << "Done!" << endl;
 }
