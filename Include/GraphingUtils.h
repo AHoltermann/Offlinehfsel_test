@@ -2,6 +2,8 @@
 #include <TLegend.h>
 #include <TGraph.h>
 #include <TCanvas.h>
+#include "TStyle.h"
+
 //Took a lot of these default setups from Jings /xjjlibs/xjjroot/xjjrootuti.h
 namespace PlotUtils {
 
@@ -11,8 +13,7 @@ namespace PlotUtils {
     const float margin_pad_top = 0.1;
 
     inline void GraphLegend(const std::vector<std::pair<TObject*, std::string>>& entries, 
-                            double x1=0.6, double y1=0.13, double x2=0.97, double y2=0.33,
-                            const char* title = nullptr) {
+                            double x1=0.6, double y1=0.13, double x2=0.97, double y2=0.33) {
         TLegend* legend = new TLegend(x1, y1, x2, y2);
         legend->SetBorderSize(0);
         legend->SetFillStyle(0);
@@ -20,7 +21,6 @@ namespace PlotUtils {
         legend->SetTextSize(0.03);
         legend->SetMargin(0.15);
         legend->SetEntrySeparation(0.12);
-        if(title) legend->SetHeader(title, "C");
         for (const auto& entry : entries) {
             legend->AddEntry(entry.first, entry.second.c_str(), "p");
         }
