@@ -65,6 +65,8 @@ void Plotter2D(vector<TObject*> objects,  // TH2D objects first, TF1 after and T
     
 
     TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+    c->SetTickx();
+    c->SetTicky();
     int colorIdx = 0;
     int labelIdx = 0;
     for (size_t i = 0; i < objects.size(); ++i) {
